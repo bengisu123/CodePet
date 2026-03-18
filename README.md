@@ -60,8 +60,14 @@ npx expo start
 Uygulamanın APK dosyasına aşağıdaki linkten ulaşabilirsiniz:
 https://drive.google.com/file/d/12c50aLoAUl1CCPFfDpqq-x0XDMtsd4Nf/view?usp=sharing
 
-## 🎥 Tanıtım Videosu
 
+## 🎥 Tanıtım Videosu
+https://youtube.com/shorts/c9IGGf0vkU0?feature=share
+
+
+## 📄 Kullanıcı Geri Bildirim Raporu
+
+Raporu buradan görüntüleyebilirsiniz:  
 
 
 ## 👩‍💻 Geliştirici
