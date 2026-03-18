@@ -1,98 +1,259 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+type PetCardProps = {
+  name: string;
+  species: string;
+};
 
-export default function HomeScreen() {
+function ProgressBar({ value, color }: { value: number; color: string }) {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.progressTrack}>
+      <View style={[styles.progressFill, { width: `${value}%`, backgroundColor: color }]} />
+    </View>
+  );
+}
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+function PetCard({ name, species }: PetCardProps) {
+  const [hunger, setHunger] = useState(60);
+  const [happiness, setHappiness] = useState(50);
+  const [energy, setEnergy] = useState(70);
+  const [xp, setXp] = useState(0);
+
+  const level = Math.floor(xp / 100) + 1;
+
+  const feedPet = () => {
+    setHunger((prev) => Math.max(0, prev - 15));
+    setHappiness((prev) => Math.min(100, prev + 5));
+    setEnergy((prev) => Math.min(100, prev + 5));
+    setXp((prev) => prev + 20);
+  };
+
+  const playWithPet = () => {
+    setHappiness((prev) => Math.min(100, prev + 15));
+    setHunger((prev) => Math.min(100, prev + 10));
+    setEnergy((prev) => Math.max(0, prev - 15));
+    setXp((prev) => prev + 25);
+  };
+
+  const restPet = () => {
+    setEnergy((prev) => Math.min(100, prev + 20));
+    setHunger((prev) => Math.min(100, prev + 5));
+    setXp((prev) => prev + 15);
+  };
+
+  const petEmoji = useMemo(() => {
+    if (energy <= 20) return '😴';
+    if (hunger >= 80) return '😿';
+    if (happiness >= 80) return '😸';
+    if (happiness <= 30) return '🥺';
+    return '🐾';
+  }, [energy, hunger, happiness]);
+
+  const backgroundColor = useMemo(() => {
+    if (energy <= 20) return '#E6EAF4';
+    if (hunger >= 80) return '#FFE5E5';
+    if (happiness >= 80) return '#E8FFF1';
+    return '#FFF4E6';
+  }, [energy, hunger, happiness]);
+
+  const achievements = [
+    xp >= 20 ? '🍽️ İlk Besleme' : null,
+    xp >= 50 ? '🎉 Oyun Sever' : null,
+    xp >= 100 ? '⭐ Level 2' : null,
+    xp >= 200 ? '🏆 Usta Bakıcı' : null,
+  ].filter(Boolean);
+
+  return (
+    <View style={[styles.screenWrapper, { backgroundColor }]}>
+      <View style={styles.card}>
+        <Text style={styles.emoji}>{petEmoji}</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.species}>Tür: {species}</Text>
+
+        <View style={styles.levelBox}>
+          <Text style={styles.levelText}>Level: {level}</Text>
+          <Text style={styles.levelText}>XP: {xp}</Text>
+        </View>
+
+        <View style={styles.statSection}>
+          <Text style={styles.statLabel}>Açlık: {hunger}</Text>
+          <ProgressBar value={100 - hunger} color="#FF9F68" />
+
+          <Text style={styles.statLabel}>Mutluluk: {happiness}</Text>
+          <ProgressBar value={happiness} color="#6EC6B8" />
+
+          <Text style={styles.statLabel}>Enerji: {energy}</Text>
+          <ProgressBar value={energy} color="#7A9DFF" />
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={feedPet}>
+          <Text style={styles.buttonText}>Besle (+20 XP)</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.secondaryButton]} onPress={playWithPet}>
+          <Text style={styles.buttonText}>Oyna (+25 XP)</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.thirdButton]} onPress={restPet}>
+          <Text style={styles.buttonText}>Dinlendir (+15 XP)</Text>
+        </TouchableOpacity>
+
+        <View style={styles.achievementBox}>
+          <Text style={styles.achievementTitle}>Rozetler</Text>
+          {achievements.length > 0 ? (
+            achievements.map((item, index) => (
+              <Text key={index} style={styles.achievementText}>
+                {item}
+              </Text>
+            ))
+          ) : (
+            <Text style={styles.achievementText}>Henüz rozet kazanılmadı.</Text>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+export default function Index() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.title}>CodePet</Text>
+        <Text style={styles.subtitle}>Oyunlaştırılmış Dijital Evcil Hayvan</Text>
+
+        <PetCard name="Mino" species="Kedi" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF4E6',
   },
-  stepContainer: {
-    gap: 8,
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  screenWrapper: {
+    borderRadius: 28,
+    padding: 12,
+  },
+  title: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: '#5C3D2E',
+    textAlign: 'center',
+    marginBottom: 8,
+    marginTop: 20,
+  },
+  subtitle: {
+    fontSize: 17,
+    color: '#7A5C4D',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    padding: 24,
+    elevation: 4,
+  },
+  emoji: {
+    fontSize: 68,
+    textAlign: 'center',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  name: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#3A2E2A',
+    textAlign: 'center',
+  },
+  species: {
+    fontSize: 16,
+    color: '#8B6F62',
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  levelBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFF8F1',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 18,
+  },
+  levelText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4B3A33',
+  },
+  statSection: {
+    marginBottom: 18,
+  },
+  statLabel: {
+    fontSize: 15,
+    color: '#4B3A33',
+    marginBottom: 6,
+    marginTop: 10,
+  },
+  progressTrack: {
+    width: '100%',
+    height: 12,
+    backgroundColor: '#EFEFEF',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 10,
+  },
+  button: {
+    width: '100%',
+    backgroundColor: '#FF9F68',
+    paddingVertical: 14,
+    borderRadius: 14,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  secondaryButton: {
+    backgroundColor: '#6EC6B8',
+  },
+  thirdButton: {
+    backgroundColor: '#7A9DFF',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  achievementBox: {
+    marginTop: 20,
+    backgroundColor: '#FFF8F1',
+    borderRadius: 16,
+    padding: 16,
+  },
+  achievementTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#4B3A33',
+    marginBottom: 10,
+  },
+  achievementText: {
+    fontSize: 15,
+    color: '#5C4A42',
+    marginBottom: 6,
   },
 });
