@@ -1,50 +1,71 @@
-# Welcome to your Expo app 👋
+# 🐾 CodePet - Dijital Evcil Hayvan Uygulaması
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 📌 Proje Amacı
 
-## Get started
+CodePet, React Native ve Expo kullanılarak geliştirilmiş oyunlaştırılmış bir mobil uygulamadır.
+Bu uygulamanın amacı, kullanıcıların sanal bir evcil hayvan ile etkileşime girerek eğlenceli ve motive edici bir deneyim yaşamalarını sağlamaktır.
 
-1. Install dependencies
+## 🎮 Oyunlaştırma Özellikleri
 
-   ```bash
-   npm install
-   ```
+* XP (Deneyim Puanı) sistemi
+* Level (Seviye) sistemi
+* Rozet (Achievement) sistemi
+* Etkileşimli aksiyonlar:
 
-2. Start the app
+  * Besle (+20 XP)
+  * Oyna (+25 XP)
+  * Dinlendir (+15 XP)
+* Dinamik durum göstergeleri:
 
-   ```bash
-   npx expo start
-   ```
+  * Açlık
+  * Mutluluk
+  * Enerji
 
-In the output, you'll find options to open the app in a
+## 🎨 Arayüz (UI/UX) Özellikleri
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* Modern kart tasarımı
+* Dinamik emoji tepkileri
+* Kullanıcı etkileşimine göre değişen renkler
+* Basit ve kullanıcı dostu arayüz
+* İlerleme çubukları (progress bar)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ⚙️ Kurulum ve Çalıştırma
 
-## Get a fresh project
+1. Projeyi klonlayın:
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```bash id="t1r8wq"
+git clone https://github.com/bengisuy123/CodePet.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Proje klasörüne girin:
 
-## Learn more
+```bash id="h3z5jp"
+cd CodePet
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Gerekli paketleri yükleyin:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash id="7b7v8h"
+npm install
+```
 
-## Join the community
+4. Uygulamayı başlatın:
 
-Join our community of developers creating universal apps.
+```bash id="8f8g5m"
+npx expo start
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📱 APK İndirme
+
+Uygulamanın APK dosyasına aşağıdaki linkten ulaşabilirsiniz:
+https://drive.google.com/file/d/12c50aLoAUl1CCPFfDpqq-x0XDMtsd4Nf/view?usp=sharing
+
+## 🎥 Tanıtım Videosu
+
+
+
+## 👩‍💻 Geliştirici
+
+Bengisu Yiğit
+Öğrenci No: 231118049
+
